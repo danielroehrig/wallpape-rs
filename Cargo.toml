@@ -2,8 +2,12 @@
 name = "wallpape-rs"
 version = "0.1.0"
 edition = "2021"
+authors = ["Daniel Röhrig <mail@danielroehrig.de>"]
+license = "MIT OR Apache-2.0"
+description = "Generate geometric wallpapers with presets"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = { version = "4.3.0", features = ["derive"] }
 raqote = "0.8.2"
