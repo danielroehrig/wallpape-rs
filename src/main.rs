@@ -1,21 +1,39 @@
 use raqote::*;
 use clap::Parser;
+use std::collections::HashMap;
 
 #[derive(Parser)]
 #[command(version, about)]
 struct Args {
-    #[arg(long, value_name ="width", help = "Width of the resulting wallpaper")]
+    #[arg(long, value_name = "width", help = "Width of the resulting wallpaper")]
     width: Option<i32>,
 
-    #[arg(long, value_name ="height", help = "Height of the resulting wallpaper")]
-    height: Option<i32>
+    #[arg(long, value_name = "height", help = "Height of the resulting wallpaper")]
+    height: Option<i32>,
+
+    #[arg(long, value_name = "palette", help = "Colorscheme to use")]
+    palette: Option<String>,
 }
 
 fn main() {
+    let palettes = HashMap::from(
+        [
+            ("cyberpunk",
+             vec![
+                 Color::new(0xff, 0, 255, 159),
+                 Color::new(0xff, 0, 184, 255),
+             ])
+        ]
+    );
+
+
     let cli = Args::parse();
 
     let width = cli.width.unwrap_or(1920);
     let height = cli.height.unwrap_or(1080);
+    let colorsheme = cli.palette.unwrap_or(String::from("cyberpunk"));
+
+    let pallete  = palettes.get(colorsheme.as_str()).unwrap();
 
     let mut dt = DrawTarget::new(width, height);
 
@@ -28,16 +46,16 @@ fn main() {
             stops: vec![
                 GradientStop {
                     position: 0.0,
-                    color: (
-                        Color::new(0xff, 0xcc, 0x00, 0x00)
-                        ),
+                    color: *(
+                        pallete.first().unwrap()
+                    ),
                 },
                 GradientStop {
                     position: 1.0,
                     color: (
-                        Color::new(0xff, 0xcc, 0xcc, 0xff)
-                        ),
-                }
+                        pallete[3]
+                    ),
+                },
             ]
         }, Point::new(0., 0.),
         Point::new(dt.width() as f32, dt.height() as f32), Spread::Pad);
