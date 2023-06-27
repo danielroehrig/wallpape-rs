@@ -1,6 +1,7 @@
 use raqote::*;
 use clap::Parser;
 use std::collections::HashMap;
+use std::process::exit;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -31,9 +32,15 @@ fn main() {
 
     let width = cli.width.unwrap_or(1920);
     let height = cli.height.unwrap_or(1080);
-    let colorsheme = cli.palette.unwrap_or(String::from("cyberpunk"));
+    let color_scheme = cli.palette.unwrap_or(String::from("cyberpunk"));
 
-    let pallete  = palettes.get(colorsheme.as_str()).unwrap();
+    let palette = match palettes.get(color_scheme.as_str()) {
+        Some(x) => x,
+        None => {
+            eprintln!("Unknown palette \"{}\"", color_scheme);
+            exit(1);
+        },
+    };
 
     let mut dt = DrawTarget::new(width, height);
 
@@ -47,13 +54,13 @@ fn main() {
                 GradientStop {
                     position: 0.0,
                     color: *(
-                        pallete.get(0).unwrap()
+                        palette.get(0).unwrap()
                     ),
                 },
                 GradientStop {
                     position: 1.0,
                     color: *(
-                        pallete.get(1).unwrap()
+                        palette.get(1).unwrap()
                     ),
                 },
             ]
