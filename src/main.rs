@@ -17,27 +17,7 @@ struct Args {
 }
 
 fn main() {
-    let palettes = HashMap::from(
-        [
-            ("cyberpunk",
-             vec![
-                 Color::new(0xff, 247, 37, 133),
-                 Color::new(0xff, 114, 9, 183),
-                 Color::new(0xff, 58, 12, 163),
-                 Color::new(0xff, 67, 97, 238),
-                 Color::new(0xff, 76, 201, 240),
-             ]),
-            ("pastel",
-             vec![
-                 Color::new(0xff, 205, 180, 219),
-                 Color::new(0xff, 255, 200, 221),
-                 Color::new(0xff, 255, 175, 204),
-                 Color::new(0xff, 189, 224, 254),
-                 Color::new(0xff, 162, 210, 255),
-             ])
-        ]
-    );
-
+    let palettes = build_palettes();
 
     let cli = Args::parse();
 
@@ -59,6 +39,29 @@ fn main() {
 
 
     dt.write_png("example.png").unwrap();
+}
+
+fn build_palettes() -> HashMap<&'static str, Vec<Color>> {
+    HashMap::from(
+        [
+            ("cyberpunk",
+             vec![
+                 Color::new(0xff, 247, 37, 133),
+                 Color::new(0xff, 114, 9, 183),
+                 Color::new(0xff, 58, 12, 163),
+                 Color::new(0xff, 67, 97, 238),
+                 Color::new(0xff, 76, 201, 240),
+             ]),
+            ("pastel",
+             vec![
+                 Color::new(0xff, 205, 180, 219),
+                 Color::new(0xff, 255, 200, 221),
+                 Color::new(0xff, 255, 175, 204),
+                 Color::new(0xff, 189, 224, 254),
+                 Color::new(0xff, 162, 210, 255),
+             ])
+        ]
+    )
 }
 
 fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
