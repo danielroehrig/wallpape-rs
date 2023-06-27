@@ -47,13 +47,13 @@ fn main() {
                 GradientStop {
                     position: 0.0,
                     color: *(
-                        pallete.first().unwrap()
+                        pallete.get(0).unwrap()
                     ),
                 },
                 GradientStop {
                     position: 1.0,
-                    color: (
-                        pallete[3]
+                    color: *(
+                        pallete.get(1).unwrap()
                     ),
                 },
             ]
