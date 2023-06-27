@@ -44,6 +44,13 @@ fn main() {
 
     let mut dt = DrawTarget::new(width, height);
 
+    draw_gradient(palette, &mut dt);
+
+
+    dt.write_png("example.png").unwrap();
+}
+
+fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
     let mut pb = PathBuilder::new();
     pb.rect(0., 0., dt.width() as f32, dt.height() as f32);
     let path = pb.finish();
@@ -67,7 +74,4 @@ fn main() {
         }, Point::new(0., 0.),
         Point::new(dt.width() as f32, dt.height() as f32), Spread::Pad);
     dt.fill(&path, &gradient, &DrawOptions::new());
-
-
-    dt.write_png("example.png").unwrap();
 }
