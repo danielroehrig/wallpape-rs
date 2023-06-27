@@ -21,8 +21,19 @@ fn main() {
         [
             ("cyberpunk",
              vec![
-                 Color::new(0xff, 0, 255, 159),
-                 Color::new(0xff, 0, 184, 255),
+                 Color::new(0xff, 247, 37, 133),
+                 Color::new(0xff, 114, 9, 183),
+                 Color::new(0xff, 58, 12, 163),
+                 Color::new(0xff, 67, 97, 238),
+                 Color::new(0xff, 76, 201, 240),
+             ]),
+            ("pastel",
+             vec![
+                 Color::new(0xff, 205, 180, 219),
+                 Color::new(0xff, 255, 200, 221),
+                 Color::new(0xff, 255, 175, 204),
+                 Color::new(0xff, 189, 224, 254),
+                 Color::new(0xff, 162, 210, 255),
              ])
         ]
     );
