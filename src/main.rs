@@ -30,7 +30,7 @@ fn main() {
         None => {
             eprintln!("Unknown palette \"{}\"", color_scheme);
             exit(1);
-        },
+        }
     };
 
     let mut dt = DrawTarget::new(width, height);
@@ -59,6 +59,14 @@ fn build_palettes() -> HashMap<&'static str, Vec<Color>> {
                  Color::new(0xff, 255, 175, 204),
                  Color::new(0xff, 189, 224, 254),
                  Color::new(0xff, 162, 210, 255),
+             ]),
+            ("gundam",
+             vec![
+                 Color::new(0xff, 43, 45, 66),
+                 Color::new(0xff, 141, 153, 174),
+                 Color::new(0xff, 237, 242, 244),
+                 Color::new(0xff, 239, 35, 60),
+                 Color::new(0xff, 217, 4, 41),
              ])
         ]
     )
