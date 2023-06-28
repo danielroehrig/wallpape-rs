@@ -7,6 +7,9 @@ use rand::seq::SliceRandom;
 #[derive(Parser)]
 #[command(version, about)]
 struct Args {
+
+    dest: String,
+
     #[arg(long, value_name = "width", help = "Width of the resulting wallpaper")]
     width: Option<i32>,
 
@@ -52,6 +55,8 @@ fn main() {
     let width = cli.width.unwrap_or(1920);
     let height = cli.height.unwrap_or(1080);
     let color_scheme = cli.palette.unwrap_or(String::from("cyberpunk"));
+    let dest = cli.dest;
+
 
     let palette = match palettes.get(color_scheme.as_str()) {
         Some(x) => x,
@@ -66,7 +71,7 @@ fn main() {
     draw_gradient(palette, &mut dt);
 
 
-    dt.write_png("example.png").unwrap();
+    dt.write_png(dest).unwrap();
 }
 
 fn print_palettes(palettes: &HashMap<&str, Vec<Color>>) {
