@@ -2,6 +2,7 @@ use raqote::*;
 use clap::{Parser, Subcommand};
 use std::collections::HashMap;
 use std::process::exit;
+use rand::seq::SliceRandom;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -107,6 +108,8 @@ fn build_palettes() -> HashMap<&'static str, Vec<Color>> {
 }
 
 fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
+    let colors: Vec<&Color> = palette.choose_multiple(&mut rand::thread_rng(), 2).collect();
+
     let mut pb = PathBuilder::new();
     pb.rect(0., 0., dt.width() as f32, dt.height() as f32);
     let path = pb.finish();
@@ -116,14 +119,14 @@ fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
             stops: vec![
                 GradientStop {
                     position: 0.0,
-                    color: *(
-                        palette.get(0).unwrap()
+                    color: **(
+                        colors.get(0).unwrap()
                     ),
                 },
                 GradientStop {
                     position: 1.0,
-                    color: *(
-                        palette.get(1).unwrap()
+                    color: **(
+                        colors.get(1).unwrap()
                     ),
                 },
             ]
