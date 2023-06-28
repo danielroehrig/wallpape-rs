@@ -36,20 +36,17 @@ fn main() {
 
     let cli = Args::parse();
 
-    match cli.command {
-        Some(Commands::List { list }) => {
-            match list.as_str() {
-                "palettes" => {
-                    print_palettes(&palettes);
-                }
-                _ => {
-                    eprintln!("Unknown list option \"{}\"", list);
-                    exit(1);
-                }
-            };
-            exit(0);
-        }
-        None => {}
+    if let Some(Commands::List { list }) = cli.command {
+        match list.as_str() {
+            "palettes" => {
+                print_palettes(&palettes);
+            }
+            _ => {
+                eprintln!("Unknown list option \"{}\"", list);
+                exit(1);
+            }
+        };
+        exit(0);
     }
 
     let width = cli.width.unwrap_or(1920);
