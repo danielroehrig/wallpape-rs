@@ -34,7 +34,20 @@ fn main() {
 
     match cli.command {
         Some(Commands::List {list}) => {
-            println!("cli command set {}", list)
+
+            match list.as_str() {
+                "palettes" => {
+                    println!("Available colorschemes:");
+                    for scheme in palettes.keys() {
+                        println!("{}", scheme);
+                    }
+                    exit(0);
+                },
+                _ => {
+                    eprintln!("Unknown list option \"{}\"", list);
+                    exit(1);
+                }
+            };
         }
         None => {}
     }
