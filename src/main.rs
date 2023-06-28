@@ -33,21 +33,17 @@ fn main() {
     let cli = Args::parse();
 
     match cli.command {
-        Some(Commands::List {list}) => {
-
+        Some(Commands::List { list }) => {
             match list.as_str() {
                 "palettes" => {
-                    println!("Available colorschemes:");
-                    for scheme in palettes.keys() {
-                        println!("{}", scheme);
-                    }
-                    exit(0);
-                },
+                    print_palettes(&palettes);
+                }
                 _ => {
                     eprintln!("Unknown list option \"{}\"", list);
                     exit(1);
                 }
             };
+            exit(0);
         }
         None => {}
     }
@@ -70,6 +66,13 @@ fn main() {
 
 
     dt.write_png("example.png").unwrap();
+}
+
+fn print_palettes(palettes: &HashMap<&str, Vec<Color>>) {
+    println!("Available colorschemes:");
+    for scheme in palettes.keys() {
+        println!("{}", scheme);
+    }
 }
 
 fn build_palettes() -> HashMap<&'static str, Vec<Color>> {
