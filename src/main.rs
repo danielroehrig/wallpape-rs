@@ -1,5 +1,5 @@
 use raqote::*;
-use clap::Parser;
+use clap::{Parser, Subcommand};
 use std::collections::HashMap;
 use std::process::exit;
 
@@ -14,12 +14,30 @@ struct Args {
 
     #[arg(long, value_name = "palette", help = "Colorscheme to use")]
     palette: Option<String>,
+
+    #[command(subcommand)]
+    command: Option<Commands>,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    /// List options
+    List {
+        list: String
+    }
 }
 
 fn main() {
     let palettes = build_palettes();
 
     let cli = Args::parse();
+
+    match cli.command {
+        Some(Commands::List {list}) => {
+            println!("cli command set {}", list)
+        }
+        None => {}
+    }
 
     let width = cli.width.unwrap_or(1920);
     let height = cli.height.unwrap_or(1080);
