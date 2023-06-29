@@ -126,6 +126,11 @@ fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
         .choose_multiple(&mut rand::thread_rng(), 2)
         .collect();
 
+    if colors.len() < 2 {
+        eprintln!("Too few colors for gradient effect");
+        exit(1);
+    }
+
     let mut pb = PathBuilder::new();
     pb.rect(0., 0., dt.width() as f32, dt.height() as f32);
     let path = pb.finish();
