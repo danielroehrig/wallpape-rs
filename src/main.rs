@@ -140,11 +140,11 @@ fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
             stops: vec![
                 GradientStop {
                     position: 0.0,
-                    color: **(colors.get(0).unwrap()),
+                    color: **(colors.get(0).expect("Missing Color")),
                 },
                 GradientStop {
                     position: 1.0,
-                    color: **(colors.get(1).unwrap()),
+                    color: **(colors.get(1).expect("Missing Color")),
                 },
             ],
         },
