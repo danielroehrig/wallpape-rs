@@ -195,14 +195,12 @@ fn draw_little_boxes(palette: &Vec<Color>, dt: &mut DrawTarget) {
                 size as f32,
             );
             let path = pb.finish();
-            dt.fill(&path, &color, &DrawOptions::new())
+            dt.fill(&path, &color, &DrawOptions::new());
         }
     }
 }
 
 fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
-    let rng_color: Color;
-
     let rng = &mut rand::thread_rng();
     let range1 = Uniform::new(0., dt.width() as f64);
     let range2 = Uniform::new(0., dt.height() as f64);
@@ -217,6 +215,14 @@ fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
     .unwrap();
     let cells = diagram.cells();
     for c in cells {
+        let rng_color: Color;
+        match palette.choose(rng) {
+            Some(c) => rng_color = *c,
+            None => {
+                eprintln!("Palette seems to be empty");
+                exit(1);
+            }
+        }
         let mut pb = PathBuilder::new();
         let fp = c.points().first().unwrap();
         pb.move_to(fp.x as f32, fp.y as f32);
@@ -229,6 +235,11 @@ fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
             &path,
             &Source::Solid(SolidSource::from(Color::new(0xff, 0x00, 0x00, 0x00))),
             &StrokeStyle::default(),
+            &DrawOptions::new(),
+        );
+        dt.fill(
+            &path,
+            &Source::Solid(SolidSource::from(rng_color)),
             &DrawOptions::new(),
         );
     }
