@@ -1,10 +1,13 @@
 use clap::{Parser, Subcommand};
+use rand::distributions::Uniform;
 use rand::seq::SliceRandom;
-use rand::RngCore;
+use rand::{Rng, RngCore};
 use raqote::*;
 use std::cmp::{max, min};
 use std::collections::HashMap;
 use std::process::exit;
+use voronator::delaunator::Point as Vpoint;
+use voronator::VoronoiDiagram;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -69,6 +72,7 @@ fn main() {
 
     draw_gradient(palette, &mut dt);
     draw_little_boxes(palette, &mut dt);
+    draw_voronoi(palette, &mut dt);
 
     match dt.write_png(dest.clone()) {
         Ok(_) => {
@@ -193,5 +197,39 @@ fn draw_little_boxes(palette: &Vec<Color>, dt: &mut DrawTarget) {
             let path = pb.finish();
             dt.fill(&path, &color, &DrawOptions::new())
         }
+    }
+}
+
+fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
+    let rng_color: Color;
+
+    let rng = &mut rand::thread_rng();
+    let range1 = Uniform::new(0., dt.width() as f64);
+    let range2 = Uniform::new(0., dt.height() as f64);
+    let mut points: Vec<(f64, f64)> = (0..100)
+        .map(|_| (rng.sample(&range1), rng.sample(&range2)))
+        .collect();
+    let diagram = VoronoiDiagram::<Vpoint>::from_tuple(
+        &(0., 0.),
+        &(dt.width() as f64, dt.height() as f64),
+        &points,
+    )
+    .unwrap();
+    let cells = diagram.cells();
+    for c in cells {
+        let mut pb = PathBuilder::new();
+        let fp = c.points().first().unwrap();
+        pb.move_to(fp.x as f32, fp.y as f32);
+        for p in c.points() {
+            pb.line_to(p.x as f32, p.y as f32)
+        }
+        pb.line_to(fp.x as f32, fp.y as f32);
+        let path = pb.finish();
+        dt.stroke(
+            &path,
+            &Source::Solid(SolidSource::from(Color::new(0xff, 0x00, 0x00, 0x00))),
+            &StrokeStyle::default(),
+            &DrawOptions::new(),
+        );
     }
 }
