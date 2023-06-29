@@ -68,7 +68,16 @@ fn main() {
     draw_gradient(palette, &mut dt);
 
 
-    dt.write_png(dest).unwrap();
+    match dt.write_png(dest.clone()) {
+        Ok(_) => {
+            println!("Image written to {}", dest);
+            exit(0);
+        },
+        Err(e) => {
+            eprintln!("Could not write to file \"{}\"! Error: {}", dest, e);
+            exit(1);
+        }
+    };
 }
 
 fn print_palettes(palettes: &HashMap<&str, Vec<Color>>) {
