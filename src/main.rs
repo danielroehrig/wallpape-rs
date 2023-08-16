@@ -170,7 +170,7 @@ fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
     let rng = &mut rand::thread_rng();
     let range1 = Uniform::new(0., dt.width() as f64);
     let range2 = Uniform::new(0., dt.height() as f64);
-    let mut points: Vec<(f64, f64)> = (0..100)
+    let points: Vec<(f64, f64)> = (0..100)
         .map(|_| (rng.sample(&range1), rng.sample(&range2)))
         .collect();
     let diagram = VoronoiDiagram::<Vpoint>::from_tuple(
