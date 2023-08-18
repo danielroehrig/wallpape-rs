@@ -4,11 +4,10 @@ use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
 use raqote::*;
 use std::cmp::{max, min};
-use std::collections::HashMap;
 use std::process::exit;
 use voronator::delaunator::Point as Vpoint;
 use voronator::VoronoiDiagram;
-use wallpape_rs::palettes::build_palettes;
+use wallpape_rs::palettes::*;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -39,14 +38,12 @@ enum Commands {
 }
 
 fn main() {
-    let palettes = build_palettes();
-
     let cli = Args::parse();
 
     if let Some(Commands::List { list }) = cli.command {
         match list.as_str() {
             "palettes" => {
-                print_palettes(&palettes);
+                print_palettes();
             }
             _ => {
                 eprintln!("Unknown list option \"{}\"", list);
@@ -61,7 +58,7 @@ fn main() {
     let color_scheme = cli.palette.unwrap_or(String::from("cyberpunk"));
     let dest = cli.dest;
 
-    let palette = match palettes.get(color_scheme.as_str()) {
+    let palette = match get_palette(color_scheme.as_str()) {
         Some(x) => x,
         None => {
             eprintln!("Unknown palette \"{}\"", color_scheme);
@@ -87,9 +84,9 @@ fn main() {
     };
 }
 
-fn print_palettes(palettes: &HashMap<&str, Vec<Color>>) {
+fn print_palettes() {
     println!("Available colorschemes:");
-    for scheme in palettes.keys() {
+    for scheme in get_palette_names() {
         println!("{}", scheme);
     }
 }

@@ -14,3 +14,4 @@ clap = { version = "4.3.0", features = ["derive"] }
 rand = "0.8.5"
 raqote = "0.8.2"
 voronator = "0.2.1"
+lazy_static = "1.4.0"
