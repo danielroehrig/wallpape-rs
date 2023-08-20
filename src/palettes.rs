@@ -38,6 +38,14 @@ lazy_static! {
     };
 }
 
+/// Gets a palette by its name.
+///
+/// # Examples
+///
+/// ```
+///use wallpape_rs::palettes::get_palette;
+///let palette = get_palette("cyberpunk");
+/// ```
 pub fn get_palette(name: &str) -> Option<&Vec<Color>> {
     PALETTES.get(name)
 }
