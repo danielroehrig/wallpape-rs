@@ -22,6 +22,9 @@ struct Args {
     #[arg(long, value_name = "palette", help = "Colorscheme to use")]
     palette: Option<String>,
 
+    #[arg(long, value_name = "effect", help = "Effect you want to use")]
+    effect: Option<String>,
+
     #[command(subcommand)]
     command: Option<Commands>,
 }
@@ -39,6 +42,9 @@ fn main() {
         match list.as_str() {
             "palettes" => {
                 print_palettes();
+            }
+            "effects" => {
+                print_effects();
             }
             _ => {
                 eprintln!("Unknown list option \"{}\"", list);
@@ -84,4 +90,8 @@ fn print_palettes() {
     for scheme in get_palette_names() {
         println!("{}", scheme);
     }
+}
+
+fn print_effects() {
+    println!("Available effects:");
 }
