@@ -1,3 +1,4 @@
+use clap::builder::Str;
 use rand::distributions::Uniform;
 use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
@@ -9,6 +10,22 @@ use std::cmp::{max, min};
 use std::process::exit;
 use voronator::delaunator::Point as Vpoint;
 use voronator::VoronoiDiagram;
+pub enum Fx {
+    LittleBoxes,
+    Gradient,
+    Voronoi,
+}
+
+impl Fx {
+    pub const VALUES: [Self; 3] = [Self::LittleBoxes, Self::Gradient, Self::Voronoi];
+    pub fn to_s(&self) -> String {
+        match self {
+            Fx::LittleBoxes => String::from("little_boxes"),
+            Fx::Gradient => String::from("gradient"),
+            Fx::Voronoi => String::from("voronoi"),
+        }
+    }
+}
 
 pub fn draw_little_boxes(palette: &Vec<Color>, dt: &mut DrawTarget) {
     let rng_color: Color;
