@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{command, CommandFactory, Parser, Subcommand};
 use raqote::*;
 use std::process::exit;
 use wallpape_rs::effects::*;
@@ -14,27 +14,51 @@ struct Args {
 #[derive(Subcommand)]
 enum Commands {
     /// Run effect
+    #[command(disable_help_flag = true)]
     Render {
+        /// File path to rendered image
         dest: String,
 
-        #[arg(long, value_name = "width", help = "Width of the resulting wallpaper")]
-        width: Option<i32>,
+        #[arg(
+            short,
+            long,
+            value_name = "width",
+            default_value_t = 1920,
+            help = "Width of the resulting wallpaper"
+        )]
+        width: i32,
+
+        #[arg(
+            short,
+            long,
+            value_name = "height",
+            default_value_t = 1080,
+            help = "Height of the resulting wallpaper"
+        )]
+        height: i32,
 
         #[arg(
             long,
-            value_name = "height",
-            help = "Height of the resulting wallpaper"
+            value_name = "palette",
+            help = "Colorscheme to use",
+            default_value_t = String::from("cyberpunk"),
         )]
-        height: Option<i32>,
+        palette: String,
 
-        #[arg(long, value_name = "palette", help = "Colorscheme to use")]
-        palette: Option<String>,
-
-        #[arg(long, value_name = "effect", help = "Effect you want to use")]
-        effect: Option<String>,
+        #[arg(
+            long,
+            value_name = "effect",
+            help = "Effect you want to use",
+            default_value_t = String::from("voronoi"),
+        )]
+        effect: String,
     },
     /// List options
-    List { list: String },
+    #[command(disable_help_flag = true, about = "List possible options")]
+    List {
+        /// Effects or Palettes
+        list: String,
+    },
 }
 
 fn main() {
@@ -63,14 +87,10 @@ fn main() {
             palette,
             effect,
         }) => {
-            let width = width.unwrap_or(1920);
-            let height = height.unwrap_or(1080);
-            let color_scheme = palette.unwrap_or(String::from("cyberpunk"));
-
-            let palette = match get_palette(color_scheme.as_str()) {
+            let palette = match get_palette(palette.as_str()) {
                 Some(x) => x,
                 None => {
-                    eprintln!("Unknown palette \"{}\"", color_scheme);
+                    eprintln!("Unknown palette \"{}\"", palette);
                     exit(1);
                 }
             };
@@ -92,7 +112,11 @@ fn main() {
                 }
             };
         }
-        None => exit(1),
+        None => {
+            let mut cmd = Args::command();
+            let _ = cmd.print_help();
+            exit(0);
+        }
     }
 }
 
