@@ -7,8 +7,10 @@ use raqote::{
 };
 use std::cmp::{max, min};
 use std::process::exit;
+use std::str::FromStr;
 use voronator::delaunator::Point as Vpoint;
 use voronator::VoronoiDiagram;
+
 pub enum Fx {
     LittleBoxes,
     Gradient,
@@ -26,7 +28,27 @@ impl Fx {
     }
 }
 
-pub fn draw_little_boxes(palette: &Vec<Color>, dt: &mut DrawTarget) {
+impl FromStr for Fx {
+    type Err = String;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "little_boxes" => Ok(Fx::LittleBoxes),
+            "gradient" => Ok(Fx::Gradient),
+            "voronoi" => Ok(Fx::Voronoi),
+            _ => Err("Good not be converted to FX".to_string()),
+        }
+    }
+}
+
+pub fn run_fx(fx: Fx, palette: &Vec<Color>, dt: &mut DrawTarget) {
+    match fx {
+        Fx::LittleBoxes => draw_little_boxes(palette, dt),
+        Fx::Gradient => draw_gradient(palette, dt),
+        Fx::Voronoi => draw_voronoi(palette, dt),
+    }
+}
+
+fn draw_little_boxes(palette: &Vec<Color>, dt: &mut DrawTarget) {
     let rng_color: Color;
     let rng = &mut rand::thread_rng();
     match palette.choose(rng) {
@@ -64,7 +86,7 @@ pub fn draw_little_boxes(palette: &Vec<Color>, dt: &mut DrawTarget) {
     }
 }
 
-pub fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
+fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
     let colors: Vec<&Color> = palette
         .choose_multiple(&mut rand::thread_rng(), 2)
         .collect();
@@ -98,7 +120,7 @@ pub fn draw_gradient(palette: &Vec<Color>, dt: &mut DrawTarget) {
     dt.fill(&path, &gradient, &DrawOptions::new());
 }
 
-pub fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
+fn draw_voronoi(palette: &Vec<Color>, dt: &mut DrawTarget) {
     let rng = &mut rand::thread_rng();
     let range1 = Uniform::new(0., dt.width() as f64);
     let range2 = Uniform::new(0., dt.height() as f64);

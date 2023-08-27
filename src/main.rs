@@ -97,9 +97,12 @@ fn main() {
 
             let mut dt = DrawTarget::new(width, height);
 
-            // draw_gradient(palette, &mut dt);
-            // draw_little_boxes(palette, &mut dt);
-            draw_voronoi(palette, &mut dt);
+            if let Ok(fx) = effect.parse::<Fx>() {
+                run_fx(fx, palette, &mut dt);
+            } else {
+                eprintln!("Unknown effect \"{}\"", effect);
+                exit(1);
+            }
 
             match dt.write_png(dest.clone()) {
                 Ok(_) => {
