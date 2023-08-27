@@ -38,6 +38,7 @@ enum Commands {
         height: i32,
 
         #[arg(
+            short,
             long,
             value_name = "palette",
             help = "Colorscheme to use",
@@ -46,6 +47,7 @@ enum Commands {
         palette: String,
 
         #[arg(
+            short = 'f',
             long,
             value_name = "effect",
             help = "Effect you want to use",
