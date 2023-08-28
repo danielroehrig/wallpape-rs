@@ -135,6 +135,6 @@ fn print_palettes() {
 fn print_effects() {
     println!("Available effects:");
     for x in Fx::VALUES {
-        println!("{}", x.to_s())
+        println!("{}", x.to_string())
     }
 }

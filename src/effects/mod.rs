@@ -19,7 +19,10 @@ pub enum Fx {
 
 impl Fx {
     pub const VALUES: [Self; 3] = [Self::LittleBoxes, Self::Gradient, Self::Voronoi];
-    pub fn to_s(&self) -> String {
+}
+
+impl ToString for Fx {
+    fn to_string(&self) -> String {
         match self {
             Fx::LittleBoxes => String::from("little_boxes"),
             Fx::Gradient => String::from("gradient"),
