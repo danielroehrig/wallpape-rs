@@ -89,7 +89,7 @@ fn main() {
             palette,
             effect,
         }) => {
-            let palette = match get_palette(palette.as_str()) {
+            let palette = match get_palette(&palette) {
                 Some(x) => x,
                 None => {
                     eprintln!("Unknown palette \"{}\"", palette);

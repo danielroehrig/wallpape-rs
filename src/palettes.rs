@@ -43,13 +43,14 @@ lazy_static! {
 /// # Examples
 ///
 /// ```
-///use wallpape_rs::palettes::get_palette;
-///let palette = get_palette("cyberpunk");
+/// use wallpape_rs::palettes::get_palette;
+/// let palette_name = String::from("cyberpunk");
+/// let palette = get_palette(&palette_name);
 /// ```
-pub fn get_palette(name: &str) -> Option<&Vec<Color>> {
-    PALETTES.get(name)
+pub fn get_palette(name: &String) -> Option<&'static Vec<Color>> {
+    PALETTES.get(name.as_str())
 }
 
 pub fn get_palette_names() -> Vec<&'static str> {
-    PALETTES.clone().into_keys().collect()
+    PALETTES.keys().map(|k| *k).collect()
 }
