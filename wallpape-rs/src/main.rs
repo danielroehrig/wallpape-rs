@@ -1,8 +1,8 @@
 use clap::{command, CommandFactory, Parser, Subcommand};
-use raqote::*;
+use libwallpape_rs::effects::*;
+use libwallpape_rs::palettes::*;
+use raqote::DrawTarget;
 use std::process::exit;
-use wallpape_rs::effects::*;
-use wallpape_rs::palettes::*;
 
 #[derive(Parser)]
 #[command(version, about)]
